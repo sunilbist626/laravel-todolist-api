@@ -27,7 +27,7 @@ Update the .env file with your environment-specific details, such as database cr
 ### 6. Build and Start Containers
 Navigate to the application root folder and run Docker Compose to build and start your containers:
 ```sh
-docker-copose up -d
+docker-compose up -d
 ```
 ### 7. Finalize Setup
 ```sh
