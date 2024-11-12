@@ -16,7 +16,8 @@ To automate the build, test, and deploy process on your self-hosted GitHub Actio
 ```sh
 cd ~/dir_name
 ```
-### Copy the download link from GitHub (provided in the setup instructions on the GitHub page) and download it:
+### Copy the download link from GitHub
+- (provided in the setup instructions on the GitHub page) and download it:
 ```sh
 curl -o actions-runner-linux-x64-<version>.tar.gz -L https://github.com/actions/runner/releases/download/v<version>/actions-runner-linux-x64-<version>.tar.gz
 ```
