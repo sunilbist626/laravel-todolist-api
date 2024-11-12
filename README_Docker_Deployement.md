@@ -1,8 +1,8 @@
 # Laravel To-Do List Deployment with docker compose
 # Setup Instructions
 ## Prerequisites
-Docker
-Docker-compose
+1. Docker
+2. Docker-compose
 
 ## Deployement Instruction
 ## 1. Install Docker and docker-compose
