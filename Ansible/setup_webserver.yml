@@ -1,0 +1,101 @@
+---
+- name: Setup Web Server with Redis
+  hosts: servers  # Replace 'servers' with your actual inventory group or IP
+  become: true
+
+  vars:
+    php_version: "8.3"
+    db_name: "laravel"
+    db_user: "sunilbist"
+    db_password: "secret"
+    mysql_root_password: "your_root_password"  # Replace with the actual MySQL root password
+
+  tasks:
+    - name: Update apt package list
+      apt:
+        update_cache: yes
+
+    - name: Install prerequisites for PHP repository
+      apt:
+        name: software-properties-common
+        state: present
+
+    - name: Add PHP PPA
+      apt_repository:
+        repo: ppa:ondrej/php
+        state: present
+        update_cache: yes
+
+    - name: Install PHP, PHP-FPM, Nginx, MySQL, Redis, and Composer
+      apt:
+        name:
+          - "php{{ php_version }}"
+          - "php{{ php_version }}-fpm"
+          - nginx
+          - mysql-server
+          - composer
+          - redis-server
+        state: present
+
+    - name: Install Python MySQL client library
+      apt:
+        name: python3-pymysql
+        state: present
+
+    - name: Ensure MySQL service is running and enabled
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: Ensure Redis service is running and enabled
+      service:
+        name: redis-server
+        state: started
+        enabled: yes
+
+    - name: Set MySQL root password and authenticate with mysql_native_password
+      mysql_user:
+        name: root
+        host: localhost
+        password: "{{ mysql_root_password }}"
+        priv: "*.*:ALL,GRANT"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        state: present
+      notify: Restart MySQL
+
+    - name: Create MySQL database
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: Create MySQL user with all privileges
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        host: "%"
+        state: present
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: Restart PHP-FPM and Nginx to apply changes
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - "php{{ php_version }}-fpm"
+        - nginx
+
+  handlers:
+    - name: Restart MySQL
+      service:
+        name: mysql
+        state: restarted
+
+    - name: Restart Redis
+      service:
+        name: redis-server
+        state: restarted
