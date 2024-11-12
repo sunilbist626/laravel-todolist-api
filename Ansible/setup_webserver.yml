@@ -1,5 +1,5 @@
 ---
-- name: Setup Web Server with Redis
+- name: Setup Web Server with Redis for Laravel
   hosts: servers  # Replace 'servers' with your actual inventory group or IP
   become: true
 
@@ -26,11 +26,18 @@
         state: present
         update_cache: yes
 
-    - name: Install PHP, PHP-FPM, Nginx, MySQL, Redis, and Composer
+    - name: Install PHP, PHP-FPM, Nginx, MySQL, Redis, Composer, and required PHP extensions
       apt:
         name:
           - "php{{ php_version }}"
           - "php{{ php_version }}-fpm"
+          - "php{{ php_version }}-mysql"
+          - "php{{ php_version }}-mbstring"
+          - "php{{ php_version }}-xml"
+          - "php{{ php_version }}-dom"
+          - "php{{ php_version }}-curl"
+          - "php{{ php_version }}-zip"
+          - "php{{ php_version }}-intl"
           - nginx
           - mysql-server
           - composer
