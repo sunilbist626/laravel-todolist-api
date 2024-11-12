@@ -28,7 +28,7 @@ sudo nano /etc/ansible/hosts
 ### Add your remote servers like this:
 ```sh
 [servers]
-server1 ansible_host=192.168.1.10 ansible_user=username
+server1 ansible_host=ip_addr ansible_user=username
 ```
 ###  Test the Connection
 Make sure that your Ubuntu machine can connect to the target servers via SSH. You can test the connection with:
