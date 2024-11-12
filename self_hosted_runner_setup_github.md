@@ -14,7 +14,7 @@ To automate the build, test, and deploy process on your self-hosted GitHub Actio
 - Connect to your server where you want to set up the runner.
 - In the terminal, navigate to the directory where you want to install the runner, for example:
 ```sh
-cd /var/www/html/
+cd ~/dir_name
 ```
 ### Copy the download link from GitHub (provided in the setup instructions on the GitHub page) and download it:
 ```sh
